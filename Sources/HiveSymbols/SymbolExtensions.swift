@@ -29,10 +29,62 @@ public extension Button where Label == SwiftUI.Label<Text, Image> {
     }
 }
 
+public extension NavigationLink where Label == SwiftUI.Label<Text, Image> {
+    nonisolated
+    init(_ title: String, symbol: Symbol, @ViewBuilder destination: () -> Destination) {
+        self.init(destination: destination) {
+            SwiftUI.Label(title, symbol: symbol)
+        }
+    }
+
+    nonisolated
+    init<Value>(_ title: String, symbol: Symbol, value: Value?) where Destination == Never, Value: Hashable {
+        self.init(value: value) {
+            SwiftUI.Label(title, symbol: symbol)
+        }
+    }
+}
+
+public extension Link where Label == SwiftUI.Label<Text, Image> {
+    init(_ title: String, symbol: Symbol, destination: URL) {
+        self.init(destination: destination) {
+            SwiftUI.Label(title, symbol: symbol)
+        }
+    }
+}
+
+public extension Menu where Label == SwiftUI.Label<Text, Image> {
+    nonisolated
+    init(_ title: LocalizedStringKey, symbol: Symbol, @ViewBuilder content: () -> Content) {
+        self.init(title, systemImage: symbol.rawValue, content: content)
+    }
+}
+
+public extension Picker where Label == SwiftUI.Label<Text, Image> {
+    nonisolated
+    init(_ title: LocalizedStringKey, symbol: Symbol, selection: Binding<SelectionValue>, @ViewBuilder content: () -> Content) {
+        self.init(title, systemImage: symbol.rawValue, selection: selection, content: content)
+    }
+}
+
+public extension ControlGroup {
+    nonisolated
+    init<Controls>(_ title: LocalizedStringKey, symbol: Symbol, @ViewBuilder content: () -> Controls) where Content == LabeledControlGroupContent<Controls, SwiftUI.Label<Text, Image>>, Controls: View {
+        self.init(title, systemImage: symbol.rawValue, content: content)
+    }
+}
+
 public extension ContentUnavailableView where Label == SwiftUI.Label<Text, Image>, Description == Text?, Actions == EmptyView {
     nonisolated
     init(_ title: LocalizedStringKey, symbol: Symbol, description: Text? = nil) {
         self.init(title, systemImage: symbol.rawValue, description: description)
+    }
+}
+
+public extension Toggle where Label == SwiftUI.Label<Text, Image> {
+    nonisolated
+    init(_ title: String, symbol: Symbol, isOn: Binding<Bool>) {
+        self.init(title, systemImage: symbol.rawValue, isOn: isOn)
     }
 }
 #endif

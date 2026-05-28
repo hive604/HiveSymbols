@@ -10,6 +10,9 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var saveCount = 0
+    @State private var showSharedItems = true
+    @State private var selectedDestination: DemoDestination?
+    @State private var selectedSort = SortOption.name
 
     private let sampleSymbols: [(name: String, symbol: Symbol)] = [
         ("Document", .document),
@@ -68,6 +71,57 @@ struct ContentView: View {
                             .foregroundStyle(.secondary)
                     }
 
+                    SectionView("NavigationLink(_:symbol:destination:)") {
+                        NavigationLink("Open Documents", symbol: .document) {
+                            DestinationView(title: "Documents", symbol: .document)
+                        }
+                        .buttonStyle(.bordered)
+                    }
+
+                    SectionView("NavigationLink(_:symbol:value:)") {
+                        List(DemoDestination.allCases, selection: $selectedDestination) { destination in
+                            NavigationLink(destination.title, symbol: destination.symbol, value: destination)
+                        }
+                        .frame(minHeight: 142)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+
+                    SectionView("Link(_:symbol:destination:)") {
+                        if let url = URL(string: "https://developer.apple.com/sf-symbols/") {
+                            Link("SF Symbols", symbol: .link, destination: url)
+                        }
+                    }
+
+                    SectionView("Menu(_:symbol:content:)") {
+                        Menu("New Item", symbol: .documentBadgePlus) {
+                            Button("Document", symbol: .document) {}
+                            Button("Folder", symbol: .folderBadgePlus) {}
+                            Button("Archive", symbol: .archiveBox) {}
+                        }
+                    }
+
+                    SectionView("Picker(_:symbol:selection:content:)") {
+                        List {
+                            Picker("Sort", symbol: .listBulletRectangle, selection: $selectedSort) {
+                                ForEach(SortOption.allCases) { option in
+                                    Text(option.title).tag(option)
+                                }
+                            }
+                            .pickerStyle(.navigationLink)
+                        }
+                        .frame(minHeight: 88)
+                        .scrollDisabled(true)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+
+                    SectionView("ControlGroup(_:symbol:content:)") {
+                        ControlGroup("Document Actions", symbol: .document) {
+                            Button("Share", symbol: .squareAndArrowUp) {}
+                            Button("Archive", symbol: .archiveBox) {}
+                            Button("Delete", symbol: .trash, role: .destructive) {}
+                        }
+                    }
+
                     SectionView("ContentUnavailableView(_:symbol:description:)") {
                         ContentUnavailableView(
                             "No Documents",
@@ -77,11 +131,85 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity, minHeight: 180)
                         .background(.background.secondary, in: RoundedRectangle(cornerRadius: 8))
                     }
+
+                    SectionView("Toggle(_:symbol:isOn:)") {
+                        Toggle("Show Shared Items", symbol: .folderBadgePersonCrop, isOn: $showSharedItems)
+                            .toggleStyle(.switch)
+                    }
                 }
                 .padding()
             }
             .navigationTitle("Hive Symbols")
+            .navigationDestination(for: DemoDestination.self) { destination in
+                DestinationView(title: destination.title, symbol: destination.symbol)
+            }
         }
+    }
+}
+
+private enum DemoDestination: String, CaseIterable, Identifiable {
+    case documents
+    case folders
+    case archive
+
+    var id: Self { self }
+
+    var title: String {
+        switch self {
+        case .documents:
+            "Documents"
+        case .folders:
+            "Folders"
+        case .archive:
+            "Archive"
+        }
+    }
+
+    var symbol: Symbol {
+        switch self {
+        case .documents:
+            .document
+        case .folders:
+            .folder
+        case .archive:
+            .archiveBox
+        }
+    }
+}
+
+private enum SortOption: String, CaseIterable, Identifiable {
+    case name
+    case date
+    case kind
+
+    var id: Self { self }
+
+    var title: String {
+        switch self {
+        case .name:
+            "Name"
+        case .date:
+            "Date"
+        case .kind:
+            "Kind"
+        }
+    }
+}
+
+private struct DestinationView: View {
+    let title: String
+    let symbol: Symbol
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(symbol: symbol)
+                .font(.system(size: 56))
+                .foregroundStyle(.tint)
+
+            Text(title)
+                .font(.title.bold())
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
