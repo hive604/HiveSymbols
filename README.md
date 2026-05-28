@@ -18,6 +18,8 @@ You can write this:
 
     Image(symbol: .trash)
 
+> WARNING: Some Apple symbols are reserved for specific uses. It's best to look up a symbol in Apple's SF Symbols companion app before using it.
+
 ## Renames
 Many of the symbol names have minimal spelling changes, such as:
 
