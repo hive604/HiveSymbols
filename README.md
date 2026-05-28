@@ -25,7 +25,7 @@ Many of the symbol names have minimal spelling changes, such as:
 
     case soccerBall = "soccerball"
 
-Here, you'd use .soccerBall instead of .soccerball. The reasoning is simple: hte macOS spell chcker doesn't recognize soccerball as a word. If we add the capital B, it will instead look up soccer and ball. No spelling problem!
+Here, you'd use .soccerBall instead of .soccerball. The reasoning is simple: the macOS spell checker doesn't recognize soccerball as a word. If we add the capital B, it will instead look up soccer and ball. No spelling problem!
 
 ## License
 I've used the most permissive license I could find, The Unlicense. Suggestions and patches are welcomed, as long as they fit in the small scope of this project.
