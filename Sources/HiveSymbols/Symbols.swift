@@ -6,7 +6,7 @@
 //
 
 public nonisolated
-enum Symbol: String {
+enum Symbol: String, Sendable {
     case squareAndArrowUp = "square.and.arrow.up"
     case squareAndArrowUpFill = "square.and.arrow.up.fill"
     case squareAndArrowUpCircle = "square.and.arrow.up.circle"
