@@ -8,6 +8,10 @@ First, add the package.
 
 In your source, import the Symbol enum:
 
+    import HiveSymbols
+
+Or, if you're more paranodi:
+
     import enum HiveSymbols.Symbol
 
 Now instead of writing this:
