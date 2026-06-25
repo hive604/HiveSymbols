@@ -101,17 +101,20 @@ struct ContentView: View {
                     }
 
                     SectionView("Picker(_:symbol:selection:content:)") {
+#if os(macOS)
+                        sortPicker
+                            .pickerStyle(.menu)
+                            .fixedSize()
+                            .padding(.vertical, 6)
+#else
                         List {
-                            Picker("Sort", symbol: .listBulletRectangle, selection: $selectedSort) {
-                                ForEach(SortOption.allCases) { option in
-                                    Text(option.title).tag(option)
-                                }
-                            }
-                            .pickerStyle(.navigationLink)
+                            sortPicker
+                                .pickerStyle(.navigationLink)
                         }
                         .frame(minHeight: 88)
                         .scrollDisabled(true)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
+#endif
                     }
 
                     SectionView("ControlGroup(_:symbol:content:)") {
@@ -142,6 +145,14 @@ struct ContentView: View {
             .navigationTitle("Hive Symbols")
             .navigationDestination(for: DemoDestination.self) { destination in
                 DestinationView(title: destination.title, symbol: destination.symbol)
+            }
+        }
+    }
+
+    private var sortPicker: some View {
+        Picker("Sort", symbol: .listBulletRectangle, selection: $selectedSort) {
+            ForEach(SortOption.allCases) { option in
+                Text(option.title).tag(option)
             }
         }
     }
