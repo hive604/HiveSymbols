@@ -111,22 +111,20 @@ public extension NavigationLink where Label == SwiftUI.Label<Text, Image> {
 }
 
 public extension Link where Label == SwiftUI.Label<Text, Image> {
-    init(_ titleKey: LocalizedStringKey, symbol: Symbol, destination: URL) {
+    @MainActor @preconcurrency init(_ titleKey: LocalizedStringKey, symbol: Symbol, destination: URL) {
         self.init(destination: destination) {
             SwiftUI.Label(titleKey, symbol: symbol)
         }
     }
 
-    nonisolated
-    init(verbatim title: String, symbol: Symbol, destination: URL) {
+    @MainActor @preconcurrency init(verbatim title: String, symbol: Symbol, destination: URL) {
         self.init(destination: destination) {
             SwiftUI.Label(title, symbol: symbol)
         }
     }
 
     @_disfavoredOverload
-    nonisolated
-    init<S>(_ title: S, symbol: Symbol, destination: URL) where S: StringProtocol {
+    @MainActor @preconcurrency init<S>(_ title: S, symbol: Symbol, destination: URL) where S: StringProtocol {
         let title = String(title)
         self.init(destination: destination) {
             SwiftUI.Label(title, symbol: symbol)
@@ -134,8 +132,7 @@ public extension Link where Label == SwiftUI.Label<Text, Image> {
     }
 
     @_disfavoredOverload
-    nonisolated
-    init(_ titleResource: LocalizedStringResource, symbol: Symbol, destination: URL) {
+    @MainActor @preconcurrency init(_ titleResource: LocalizedStringResource, symbol: Symbol, destination: URL) {
         self.init(destination: destination) {
             SwiftUI.Label(titleResource, symbol: symbol)
         }
